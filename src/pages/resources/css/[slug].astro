@@ -1,0 +1,93 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import MarkdownPostsLayout from "@/layouts/MarkdownPostsLayout.astro";
+import { formatDate } from "@/utils/formatDate";
+import Options from "src/icons/Options.astro";
+
+interface Props {
+  post: CollectionEntry<"postCss">;
+}
+
+const allCssPosts = await getCollection("css");
+
+export async function getStaticPaths() {
+  const cssPosts = await getCollection("css");
+
+  return cssPosts.map((post: any) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const title = post.data.title;
+---
+
+<MarkdownPostsLayout title={title}>
+  <article class="relative p-4 break-words bg-bgDark2">
+    <h1>{title}</h1>
+    <div class="flex gap-x-2">
+      {
+        post.data.tags.map((tag: any) => (
+          <span class="px-1 text-sm font-medium bg-teal-400 py-05 text-textBg">
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+    <p>
+      <time datetime={post.data.date.toString()}>
+        📅 {formatDate(post.data.date)}
+      </time>
+    </p>
+    <Content />
+    <div
+      id="posts-css-list"
+      class="hidden mt-11 mr-2 absolute top-0 p-4 bg-bgDark1 w-full max-w-[300px] border border-bgDark3 rounded right-0"
+    >
+      <h1 class="mb-3 text-primaryColor">Otros recursos CSS:</h1>
+      <nav>
+        <ul>
+          {
+            allCssPosts.map((posts: any) => (
+              <li>
+                <a href={posts.slug} class="group">
+                  <span class="group-hover:text-primaryColor">✔</span>
+                  {posts.data.title.length > 20
+                    ? posts.data.title.slice(0, 20) + "..."
+                    : posts.data.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+    <button
+      id="posts-css-button"
+      class="absolute top-0 right-0 p-1 m-2 rounded hover:bg-bgDark3"
+    >
+      <Options />
+    </button>
+  </article>
+</MarkdownPostsLayout>
+
+<script>
+  function showOptions() {
+    const btnOpc = document.getElementById("posts-css-button");
+    const btnList = document.getElementById("posts-css-list");
+
+    if (btnOpc && btnList) {
+      btnOpc.addEventListener("click", () => {
+        if (btnList.classList.contains("hidden")) {
+          btnList.classList.replace("hidden", "block");
+        } else {
+          btnList.classList.replace("block", "hidden");
+        }
+      });
+    }
+  }
+
+  document.addEventListener("astro:page-load", showOptions);
+</script>

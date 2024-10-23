@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "url": "/resources/css",
+        "name": "CSS",
+        "description": "Contenido sobre CSS"
+    },
+    {
+        "id": 2,
+        "url": "/resources/html",
+        "name": "HTML",
+        "description": "Contenido sobre HTML"
+    },
+    {
+        "id": 3,
+        "url": "/resources/js",
+        "name": "JavaScript",
+        "description": "Contenido sobre javascript"
+    },
+    {
+        "id": 4,
+        "url": "/resources/animations",
+        "name": "Animaciones",
+        "description": "Contenido sobre animaciones en CSS"
+    }
+]

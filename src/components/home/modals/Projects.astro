@@ -1,0 +1,131 @@
+---
+import Section from "@/components/Section.astro";
+import GitHub from "src/icons/GitHub.astro";
+import Close from "src/icons/Close.astro";
+
+const PROJECTS = [
+  {
+    name: "devtoolkit",
+    description: "⚒️ Recursos que te pueden ayudar en tu web.",
+    tools: ["Astro", "Tailwind"],
+    icon: "https://raw.githubusercontent.com/yxsifdev/yxsifdev-web/main/public/favicon.svg",
+    status: 1,
+    githubURL: "https://github.com/yxsifdev/dev-tool-kit",
+    url: "https://dev-tool-kit.pages.dev",
+  },
+  {
+    name: "quantum",
+    description: "👨‍💻 Recursos que te pueden ayudar en tu web.",
+    tools: ["Vue.js", "Tailwind"],
+    icon: "https://raw.githubusercontent.com/yxsifdev/yxsifdev-web/main/public/favicon.svg",
+    status: 1,
+    githubURL: "https://github.com/yxsifdev",
+    url: "https://quantumdev.pages.dev/",
+  },
+  {
+    name: "quantum-ui",
+    description: "⚒️ Recursos que te pueden ayudar en tu web.",
+    tools: ["Astro", "Tailwind", "React"],
+    icon: "https://raw.githubusercontent.com/yxsifdev/yxsifdev-web/main/public/favicon.svg",
+    status: 0,
+    githubURL: "https://github.com/yxsifdev",
+    url: "",
+  },
+  {
+    name: "devtoolkit",
+    description: "⚒️ Recursos que te pueden ayudar en tu web.",
+    tools: ["Astro", "Tailwind", "React"],
+    icon: "https://raw.githubusercontent.com/yxsifdev/yxsifdev-web/main/public/favicon.svg",
+    status: 0,
+    githubURL: "https://github.com/yxsifdev",
+    url: "",
+  },
+  {
+    name: "devtoolkit",
+    description: "⚒️ Recursos que te pueden ayudar en tu web.",
+    tools: ["Astro", "Tailwind", "React"],
+    icon: "https://raw.githubusercontent.com/yxsifdev/yxsifdev-web/main/public/favicon.svg",
+    status: 0,
+    githubURL: "https://github.com/yxsifdev",
+    url: "",
+  },
+  {
+    name: "devtoolkit",
+    description: "⚒️ Recursos que te pueden ayudar en tu web.",
+    tools: ["Astro", "Tailwind", "React"],
+    icon: "https://raw.githubusercontent.com/yxsifdev/yxsifdev-web/main/public/favicon.svg",
+    status: 0,
+    githubURL: "https://github.com/yxsifdev",
+    url: "",
+  },
+] as const;
+---
+
+<Section
+  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 fixed top-[10%] bg-neutral-800 backdrop-blur-md p-4 rounded max-w-4xl w-full"
+>
+  <button class="absolute top-0 p-0.5">
+    <Close />
+  </button>
+  {
+    PROJECTS.map((project) => (
+      <div class="border border-white/10 rounded-md p-2.5 space-y-3">
+        <div class="flex flex-wrap justify-between">
+          <div class="flex items-center gap-x-1">
+            <img src={project.icon} class="w-auto h-5" alt="icon-project" />
+            <a
+              href={project.url}
+              target="_blank"
+              class="hover:underline decoration-dotted underline-offset-[5px] decoration-neutral-500 text-neutral-50 font-semibold"
+            >
+              {project.name}
+            </a>
+          </div>
+          <div class="flex items-center gap-x-2">
+            {project.status ? (
+              <span class="text-xs border border-emerald-500/10 bg-emerald-500/10 py-0.5 px-2 rounded-full">
+                Activo
+              </span>
+            ) : (
+              <span class="text-xs border border-red-500/10 bg-red-500/10 py-0.5 px-2 rounded-full">
+                Inactivo
+              </span>
+            )}
+            {project.githubURL && (
+              <a
+                class="inline-flex opacity-80 hover:opacity-100 transition-opacity"
+                target="_blank"
+                href={project.githubURL}
+              >
+                <GitHub />
+              </a>
+            )}
+          </div>
+        </div>
+        <p class="text-sm text-white/80">{project.description}</p>
+        {project.tools && (
+          <div class="hidden md:flex justify-start gap-1 overflow-x-auto w-full">
+            {project.tools.map((tool) => {
+              let className =
+                "text-xs font-geist-mono py-1 px-2 rounded cursor-pointer";
+              if (tool === "Astro") {
+                className +=
+                  " border border-orange-500 bg-orange-500/10 text-orange-500";
+              } else if (tool === "Tailwind") {
+                className +=
+                  " border border-cyan-500 bg-cyan-500/10 text-cyan-500";
+              } else if (tool === "React") {
+                className +=
+                  " border border-blue-500 bg-blue-500/10 text-blue-500";
+              } else if (tool === "Vue.js") {
+                className +=
+                  " border border-emerald-500 bg-emerald-500/10 text-emerald-500";
+              }
+              return <span class={className}>{tool}</span>;
+            })}
+          </div>
+        )}
+      </div>
+    ))
+  }
+</Section>

@@ -1,0 +1,40 @@
+---
+import MarkdownPostsLayout from "@/layouts/MarkdownPostsLayout.astro";
+import { getCollection } from "astro:content";
+import { formatDate } from "@/utils/formatDate";
+import Section from "@/components/Section.astro";
+
+const allCssPosts = await getCollection("css");
+const sortedCssPosts = allCssPosts.sort(
+  (a: any, b: any) => b.data.date.getTime() - a.data.date.getTime()
+);
+const title = "📌 Posts";
+---
+
+<MarkdownPostsLayout title={title}>
+  <Section class="p-4 space-y-4 bg-bgDark2">
+    <h1 class="font-bold">
+      <span class="text-teal-400">#</span> Recursos: CSS
+    </h1>
+    {
+      sortedCssPosts.map((post: any) => (
+        <article class="flex flex-col text-sm">
+          <a href={`/resources/css/${post.slug}`} class="hover:text-teal-400">
+            <span class="text-neutral-500">#</span>
+            <span>
+              {post.data.title.length > 30
+                ? post.data.title.slice(0, 130) + "..."
+                : post.data.title}
+            </span>
+          </a>
+          <time
+            datetime={post.data.date.toString()}
+            class="text-white opacity-50"
+          >
+            🗓️ {formatDate(post.data.date)}
+          </time>
+        </article>
+      ))
+    }
+  </Section>
+</MarkdownPostsLayout>

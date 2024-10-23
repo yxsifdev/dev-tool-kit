@@ -1,0 +1,43 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import MarkdownPostsLayout from "@/layouts/MarkdownPostsLayout.astro";
+import { formatDate } from "@/utils/formatDate";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+}
+
+export async function getStaticPaths() {
+  const blogPosts = await getCollection("posts");
+
+  return blogPosts.map((post: any) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const title = post.data.title;
+---
+
+<MarkdownPostsLayout title={title}>
+  <article class="p-4 bg-bgDark2">
+    <h1>{title}</h1>
+    <div class="flex gap-x-2">
+      {
+        post.data.tags.map((tag: any) => (
+          <span class="px-1 text-sm font-medium bg-teal-400 py-05 text-textBg">
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+    <p>
+      <time datetime={post.data.date.toString()}>
+        📅 {formatDate(post.data.date)}
+      </time>
+    </p>
+    <Content />
+  </article>
+</MarkdownPostsLayout>
