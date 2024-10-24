@@ -2,11 +2,13 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import MarkdownPostsLayout from "@/layouts/MarkdownPostsLayout.astro";
 import { formatDate } from "@/utils/formatDate";
+import Options from "src/icons/Options.astro";
 
 interface Props {
   post: CollectionEntry<"posts">;
 }
 
+const postPosts = await getCollection("posts");
 export async function getStaticPaths() {
   const blogPosts = await getCollection("posts");
 
@@ -22,9 +24,10 @@ const title = post.data.title;
 ---
 
 <MarkdownPostsLayout title={title}>
-  <article class="p-4 bg-bgDark2">
-    <h1>{title}</h1>
-    <div class="flex gap-x-2">
+  <article class="relative p-4 break-words bg-bgDark2">
+    <h1 class="text-2xl font-medium mb-4">{title}</h1>
+    <div class="flex flex-wrap gap-x-2 justify-start items-center">
+      🏷️:
       {
         post.data.tags.map((tag: any) => (
           <span class="px-1 text-sm font-medium bg-teal-400 py-05 text-textBg">
@@ -35,9 +38,57 @@ const title = post.data.title;
     </div>
     <p>
       <time datetime={post.data.date.toString()}>
-        📅 {formatDate(post.data.date)}
+        📅: <span class="text-sm">{formatDate(post.data.date)}</span>
       </time>
     </p>
+    <div class="border-b border-dashed border-primaryColor my-4"></div>
     <Content />
+    <div
+      id="posts-post-list"
+      class="hidden mt-11 mr-2 absolute top-0 p-4 bg-bgDark1 w-full max-w-[300px] border border-bgDark3 rounded right-0"
+    >
+      <h1 class="mb-3 text-primaryColor">Más publicaciones:</h1>
+      <nav>
+        <ul>
+          {
+            postPosts.map((posts: any) => (
+              <li>
+                <a href={posts.slug} class="group">
+                  <span class="group-hover:text-primaryColor">✔</span>
+                  {posts.data.title.length > 20
+                    ? posts.data.title.slice(0, 20) + "..."
+                    : posts.data.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+    <button
+      id="posts-post-button"
+      class="absolute top-0 right-0 p-1 m-2 rounded hover:bg-bgDark3"
+    >
+      <Options />
+    </button>
   </article>
 </MarkdownPostsLayout>
+
+<script>
+  function showOptions() {
+    const btnOpc = document.getElementById("posts-post-button");
+    const btnList = document.getElementById("posts-post-list");
+
+    if (btnOpc && btnList) {
+      btnOpc.addEventListener("click", () => {
+        if (btnList.classList.contains("hidden")) {
+          btnList.classList.replace("hidden", "block");
+        } else {
+          btnList.classList.replace("block", "hidden");
+        }
+      });
+    }
+  }
+
+  document.addEventListener("astro:page-load", showOptions);
+</script>

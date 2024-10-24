@@ -26,8 +26,9 @@ const title = post.data.title;
 
 <MarkdownPostsLayout title={title}>
   <article class="relative p-4 break-words bg-bgDark2">
-    <h1>{title}</h1>
-    <div class="flex gap-x-2">
+    <h1 class="text-2xl font-medium mb-4">{title}</h1>
+    <div class="flex flex-wrap gap-x-2 justify-start items-center">
+      🏷️:
       {
         post.data.tags.map((tag: any) => (
           <span class="px-1 text-sm font-medium bg-teal-400 py-05 text-textBg">
@@ -38,9 +39,10 @@ const title = post.data.title;
     </div>
     <p>
       <time datetime={post.data.date.toString()}>
-        📅 {formatDate(post.data.date)}
+        📅: <span class="text-sm">{formatDate(post.data.date)}</span>
       </time>
     </p>
+    <div class="border-b border-dashed border-primaryColor my-4"></div>
     <Content />
     <div
       id="posts-css-list"
