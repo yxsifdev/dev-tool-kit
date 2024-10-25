@@ -19,9 +19,9 @@ const title = "📌 Posts";
     {
       sortedBlogPosts.map((post: any) => (
         <article class="flex flex-col text-sm">
-          <a href={`/posts/${post.slug}`} class="hover:text-teal-400">
+          <a href={`/posts/${post.slug}`}>
             <span class="text-neutral-500">#</span>
-            <span>
+            <span class="hover:text-teal-400">
               {post.data.title.length > 30
                 ? post.data.title.slice(0, 130) + "..."
                 : post.data.title}
